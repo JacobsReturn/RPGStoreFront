@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -10,6 +11,9 @@ namespace RPGStoreSimulator
     /* Classes */
     internal class InventoryBase : Program /* Inventory so I didnt have to do it in every class */
     {
+        public int balance = 0;
+        public string name = "";
+
         public List<BaseItem> inventoryList = new List<BaseItem>(); /* Creating a list for inventory (ease of access) */
         public InventoryBase() { }
 
@@ -17,9 +21,11 @@ namespace RPGStoreSimulator
         {
             for (int i = 0; i < amount; i++)
             {
+                item.usedBy = this.name;
                 inventoryList.Add(item);
-                /* Print("You just received, " + item.GetName()); */
             }
+
+            Save();
         }
 
         public void GetInventory(string spacing) /* Nicely print the inventory */
@@ -33,14 +39,79 @@ namespace RPGStoreSimulator
         public void RemoveItem(BaseItem item) /* Remove an item to the inventory */
         {
             inventoryList.Remove(item);
+
+            Save();
+        }
+
+        public bool HasItem(BaseItem item)
+        {
+            bool exists = false;
+
+            foreach (BaseItem item2 in inventoryList)
+            {
+                if (item2 == item)
+                {
+                    exists = true;
+                    break;
+                }
+            }
+
+            return exists;
+        }
+
+        public void Load()
+        {
+            string location = @"C:\Users\s200503\source\repos\RPGStoreSimulator" + @"\" + this.name + ".txt";
+            string[] text = File.ReadAllLines(location);
+
+            if (text.Length > 0) 
+            {
+                inventoryList.Clear();
+
+                foreach (string line in text)
+                {
+                    if (text[0] == line) balance = Int32.Parse(text[0]);
+                    else
+                    {
+                        foreach (BaseItem item in itemList)
+                        {
+                            if (item.GetName() == line)
+                            {
+                                item.usedBy = name;
+                                inventoryList.Add(item);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public void Save()
+        {
+            string location = @"C:\Users\s200503\source\repos\RPGStoreSimulator" + @"\" + this.name + ".txt";
+            string[] lines = new string[inventoryList.Count + 1];
+            lines[0] = this.balance.ToString();
+
+            int i = 1;
+            foreach (BaseItem item in inventoryList)
+            {
+                lines[i] = item.GetName();
+                ++i;
+            }
+
+            File.WriteAllLines(location, lines);
         }
     }
 
     class Player : InventoryBase /* The user */
     {
-        public int balance = 1000;
+        public bool atStore = false;
 
-        public Player() { }
+        public Player() 
+        {
+            balance = 1000;
+            name = "Player";
+        }
 
         public bool ItemExists(BaseItem item) /* Does the item exist in the item stack */
         {
@@ -60,12 +131,12 @@ namespace RPGStoreSimulator
 
         public void BuyItem(BaseItem item) /* Buy an item from the store */
         {
-            if (ItemExists(item))
+            if (ItemExists(item) & shop.HasItem(item))
             {
                 if (balance >= item.Cost)
                 {
                     balance -= item.Cost;
-                    Print("You purchased: " + item.GetName() + " for $" + item.Cost + ". Your balance is now: $" + balance, "Red");
+                    Print("You purchased: " + item.GetName() + " for $" + item.Cost + ". Your balance is now: $" + balance, "Green");
 
                     AddItem(item, 1);
 
@@ -73,35 +144,39 @@ namespace RPGStoreSimulator
                 }
                 else
                 {
-                    Print("You cannot afford that item!", "White");
+                    Print("You cannot afford the " + item.GetName() + "!", "Red");
                 }
+            }
+            else
+            {
+                Print("You cannot buy an item that Garvalsh doesn't own.", "Red");
             }
         }
         public void SellItem(BaseItem item) /* Sell an item to the store */
         {
-            if (ItemExists(item))
+            if (ItemExists(item) & user.HasItem(item))
             {
-                if (balance >= item.Cost)
-                {
-                    balance += item.Cost;
+                balance += item.Cost;
 
-                    Print("You sold: " + item.GetName() + " for $" + item.Cost + ". Your balance is now: $" + balance, "Red");
+                Print("You sold: " + item.GetName() + " for $" + item.Cost + ". Your balance is now: $" + balance, "Green");
 
-                    shop.AddItem(item, 1);
+                shop.AddItem(item, 1);
 
-                    RemoveItem(item);
-                }
-                else
-                {
-                    Print("You cannot afford that item!", "White");
-                }
+                RemoveItem(item);
+            }
+            else
+            {
+                Print("You cannot sell an item you don't own.", "Red");
             }
         }
     }
 
     class Store : InventoryBase /* Interactable Store */
     {
-
+        public Store()
+        {
+            name = "Store";
+        }
     }
 
     /* Items */
@@ -110,12 +185,14 @@ namespace RPGStoreSimulator
         public string Name;
         public string Description;
         public int Cost;
+        public string usedBy;
 
         public BaseItem() /* Constructor. */
         {
             this.Name = "Unknown";
             this.Description = "Unknown";
             this.Cost = 0;
+            this.usedBy = "0";
         }
 
         public void SetName(string value) /* Setting item name. */
@@ -150,7 +227,7 @@ namespace RPGStoreSimulator
 
         public void NicePrint(string spacing)
         {
-            Print(spacing + this.GetName() + ", " + this.GetDescription() + ", $" + this.GetCost(), "White");
+            Print("[$" + this.GetCost() + "] " + spacing + this.GetName() + ", " + this.GetDescription(), "White");
         }
     }
 }

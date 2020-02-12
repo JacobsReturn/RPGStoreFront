@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -56,23 +57,29 @@ namespace RPGStoreSimulator
             CreateItem("Wooden Sword", "A sturdy piece of wood capable of barely damaging your enemies", 85);
 
             Print("Type /help for more information on the commands.", "White");
-            /*
-            foreach (BaseItem item in itemList)
-            {
-                item.NicePrint("");
-            }
-            */
 
-            /* Giving the user and the shop class an item to have in their inventory */
-            user.AddItem(GetItem("Wooden Sword"), 3);
-            shop.AddItem(GetItem("God Spear"), 1);
+            /* Checking if files exist */
+            if (!File.Exists(@"C:\Users\s200503\source\repos\RPGStoreSimulator" + @"\" + user.name + ".txt") & !File.Exists(@"C:\Users\s200503\source\repos\RPGStoreSimulator" + @"\" + shop.name + ".txt"))
+            {
+                /* Giving the user and the shop class an item to have in their inventory */
+                user.AddItem(GetItem("Wooden Sword"), 3);
+                shop.AddItem(GetItem("God Spear"), 1);
+            }
+            else
+            {
+                /* Loading all items from files */
+                user.Load();
+                shop.Load();
+            }
 
             /* Creating a list for all of our commands (ease of access). */
             commandList = new List<Commands>()
             {
                 new HelpCommand(),
                 new StoreCommand(),
-                new InventoryCommand()
+                new InventoryCommand(),
+                new BuyCommand(),
+                new SellCommand(),
             };
 
             while (true) /* Creating our tick */
@@ -84,13 +91,24 @@ namespace RPGStoreSimulator
         static void Think() /* Something that is run every tick */
         {
             string stringReadLine = Console.ReadLine();
-            string[] split = stringReadLine.Split(' ');
 
             foreach (Commands command in commandList)
             {
-                if (command.CanRun(split[0]))
+                if (command.stringCommand.Length <= stringReadLine.Length)
                 {
-                    command.Execute(split);
+                    string subCommand = stringReadLine.Substring(0, command.stringCommand.Length);
+
+                    if (command.CanRun(subCommand)) /* Checking if the command is the same */
+                    {
+                        string subArg = subCommand;
+
+                        if (stringReadLine.Length > command.stringCommand.Length)
+                        {
+                            subArg = stringReadLine.Substring(command.stringCommand.Length + 1, stringReadLine.Length - command.stringCommand.Length - 1); 
+                        }
+
+                        command.Execute(subArg);
+                    }
                 }
             }
         }
