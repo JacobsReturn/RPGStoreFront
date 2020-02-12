@@ -64,7 +64,7 @@ namespace RPGStoreSimulator
             */
 
             /* Giving the user and the shop class an item to have in their inventory */
-            user.AddItem(GetItem("Wooden Sword"), 35);
+            user.AddItem(GetItem("Wooden Sword"), 3);
             shop.AddItem(GetItem("God Spear"), 1);
 
             /* Creating a list for all of our commands (ease of access). */
@@ -83,128 +83,14 @@ namespace RPGStoreSimulator
 
         static void Think() /* Something that is run every tick */
         {
-            string textSpacing = "  ";
-            bool found = false;
+            string stringReadLine = Console.ReadLine();
+            string[] split = stringReadLine.Split(' ');
 
             foreach (Commands command in commandList)
             {
-                if (command.CanRun(Console.ReadLine()))
+                if (command.CanRun(split[0]))
                 {
-                    command.Execute();
-                }
-            }
-
-            if (false)
-            {
-                switch (Console.ReadLine().ToLower()) /* Command looper */
-                {
-                    case "/store":
-                        Print("Garvalsh > Welcome to Garvalsh's Weaponry and Armour!", "Cyan");
-                        Print("Garvalsh > Here are my current supplies! Hopefully you will buy something traveller!", "Cyan");
-                        Print(" You currently have: $" + user.balance, "Green");
-
-                        shop.GetInventory(textSpacing + "- ");
-
-                        found = true;
-
-                        break;
-                    case "/buy":
-                        if (user.buying)
-                        {
-                            Print("You are already buying something! Type 'cancel' to stop buying something.", "White");
-                        }
-                        else
-                        {
-                            user.selling = false;
-                            user.buying = true;
-
-                            Print("Type the name of the item you would like to purchase from Garvalsh.", "White");
-                        }
-
-                        found = true;
-
-                        break;
-                    case "/sell":
-                        if (user.selling)
-                        {
-                            Print("You are already selling something! Type 'cancel' to stop selling something.", "White");
-                        }
-                        else
-                        {
-                            user.buying = false;
-                            user.selling = true;
-
-                            Print("Type the name of the item you would like to sell to Garvalsh.", "White");
-                        }
-
-                        found = true;
-
-                        break;
-                    case "cancel":
-                        user.buying = false;
-                        user.selling = false;
-                        Print("You are no longer about to buy/sell anything.", "White");
-
-                        break;
-                    case "/inventory":
-                        Print("You currently have: $" + user.balance, "Green");
-                        Print("Your Inventory:", "White");
-
-                        user.GetInventory(textSpacing + "- ");
-
-                        found = true;
-
-                        break;
-                    case "/help":
-                        Print("Here are a list of commands: ", "White");
-                        Print(textSpacing + "- /store (takes you to the store)", "White");
-                        Print(textSpacing + "- /buy (allows you to select an item to purchase)", "White");
-                        Print(textSpacing + "- /inventory (allows you to view your inventory)", "White");
-                        Print(textSpacing + "- /sell (allows you to sell your items)", "White");
-
-                        found = true;
-
-                        break;
-                }
-
-                if (!found)
-                {
-                    if (user.buying)
-                    {
-                        foreach (BaseItem item in shop.inventoryList)
-                        {
-                            string itemName = item.GetName();
-                            if (Console.ReadLine() == itemName & !found)
-                            {
-                                user.BuyItem(item);
-                                found = true;
-
-                                break;
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                    }
-                    else if (user.selling)
-                    {
-                        foreach (BaseItem item in user.inventoryList)
-                        {
-                            string itemName = item.GetName();
-                            if (Console.ReadLine() == itemName & !found)
-                            {
-                                user.SellItem(item);
-                                found = true;
-
-                                break;
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                    }
+                    command.Execute(split);
                 }
             }
         }

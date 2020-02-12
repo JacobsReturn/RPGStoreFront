@@ -16,9 +16,9 @@ namespace RPGStoreSimulator
             this.stringCommand = "/unknown";
         }
 
-        public virtual void Execute()
+        public virtual void Execute(string[] arg)
         {
-            Console.WriteLine("gay");
+            Console.WriteLine("failed_execute");
         }
 
         public bool CanRun(string command)
@@ -39,7 +39,7 @@ namespace RPGStoreSimulator
             this.SetCommand("/help");
         }
 
-        public override void Execute()
+        public override void Execute(string[] arg)
         {
             Print("Here are a list of commands: ", "White");
             Print(textSpacing + "- /store (takes you to the store)", "White");
@@ -56,7 +56,7 @@ namespace RPGStoreSimulator
             this.SetCommand("/store");
         }
 
-        public override void Execute()
+        public override void Execute(string[] arg)
         {
             Print("Garvalsh > Welcome to Garvalsh's Weaponry and Armour!", "Cyan");
             Print("Garvalsh > Here are my current supplies! Hopefully you will buy something traveller!", "Cyan");
@@ -73,12 +73,41 @@ namespace RPGStoreSimulator
             this.SetCommand("/inventory");
         }
 
-        public override void Execute()
+        public override void Execute(string[] arg)
         {
             Print("You currently have: $" + user.balance, "Green");
             Print("Your Inventory:", "White");
 
             user.GetInventory(textSpacing + "- ");
+        }
+    }
+
+    class BuyCommand : Commands
+    {
+        public BuyCommand()
+        {
+            this.SetCommand("/buy");
+        }
+
+        public override void Execute(string[] args)
+        {
+            if (args.Length > 1)
+            {
+                foreach (BaseItem item in shop.inventoryList)
+                {
+                    string itemName = item.GetName();
+                    if (args[1] == itemName)
+                    {
+                        user.BuyItem(item);
+
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
         }
     }
 }

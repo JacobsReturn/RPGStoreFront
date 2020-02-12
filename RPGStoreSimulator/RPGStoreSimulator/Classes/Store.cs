@@ -38,8 +38,6 @@ namespace RPGStoreSimulator
 
     class Player : InventoryBase /* The user */
     {
-        public bool buying = false;
-        public bool selling = false;
         public int balance = 1000;
 
         public Player() { }
@@ -70,8 +68,6 @@ namespace RPGStoreSimulator
                     Print("You purchased: " + item.GetName() + " for $" + item.Cost + ". Your balance is now: $" + balance, "Red");
 
                     AddItem(item, 1);
-                    buying = false;
-                    selling = false;
 
                     shop.RemoveItem(item);
                 }
@@ -92,9 +88,6 @@ namespace RPGStoreSimulator
                     Print("You sold: " + item.GetName() + " for $" + item.Cost + ". Your balance is now: $" + balance, "Red");
 
                     shop.AddItem(item, 1);
-
-                    buying = false;
-                    selling = false;
 
                     RemoveItem(item);
                 }
