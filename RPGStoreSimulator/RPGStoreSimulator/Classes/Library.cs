@@ -10,6 +10,12 @@ namespace RPGStoreSimulator
     class Library
     {
         /*Array.Sort(lol);*/
+
+        public Library()
+        {
+            //Program.CreateItem();
+        }
+        
     }
 
 }

@@ -9,7 +9,10 @@ using System.Runtime;
 namespace RPGStoreSimulator
 {
     /* Classes */
-    internal class InventoryBase : Program /* Inventory so I didnt have to do it in every class */
+    /// <summary>
+    /// The base for the player/store or any other thing that uses a "inventory" of sorts.
+    /// </summary>
+    internal class InventoryBase : Program
     {
         public int balance = 0;
         public string name = "";
@@ -17,7 +20,12 @@ namespace RPGStoreSimulator
         public List<BaseItem> inventoryList = new List<BaseItem>(); /* Creating a list for inventory (ease of access) */
         public InventoryBase() { }
 
-        public void AddItem(BaseItem item, int amount) /* Add an item to the inventory */
+        /// <summary>
+        /// Add an item to the inventory that is connected to this class.
+        /// </summary>
+        /// <param name="item">The (BaseItem) item to be added to the inventory.</param>
+        /// <param name="amount">How many do you want to add? (this can be as much as you desire).</param>
+        public void AddItem(BaseItem item, int amount)
         {
             for (int i = 0; i < amount; i++)
             {
@@ -28,7 +36,11 @@ namespace RPGStoreSimulator
             Save();
         }
 
-        public void GetInventory(string spacing) /* Nicely print the inventory */
+        /// <summary>
+        /// Print the inventory is a nice form.
+        /// </summary>
+        /// <param name="spacing">String spacing between the text and the side. Example: "   " (which is three spaces to the right).</param>
+        public void GetInventory(string spacing)
         {
             foreach (BaseItem item in inventoryList)
             {
@@ -36,6 +48,10 @@ namespace RPGStoreSimulator
             }
         }
 
+        /// <summary>
+        /// Remove the item from the classes inventory.
+        /// </summary>
+        /// <param name="item">The (BaseItem) item to remove from the current inventory in context.</param>
         public void RemoveItem(BaseItem item) /* Remove an item to the inventory */
         {
             inventoryList.Remove(item);
@@ -43,6 +59,11 @@ namespace RPGStoreSimulator
             Save();
         }
 
+        /// <summary>
+        /// Check if the currenct inventory in context has the item.
+        /// </summary>
+        /// <param name="item">The (BaseItem) item to check if it exists in the inventory list.</param>
+        /// <returns></returns>
         public bool HasItem(BaseItem item)
         {
             bool exists = false;
@@ -59,6 +80,9 @@ namespace RPGStoreSimulator
             return exists;
         }
 
+        /// <summary>
+        /// Load the current context classes data.
+        /// </summary>
         public void Load()
         {
             string location = @"C:\Users\s200503\source\repos\RPGStoreSimulator" + @"\" + this.name + ".txt";
@@ -86,6 +110,9 @@ namespace RPGStoreSimulator
             }
         }
 
+        /// <summary>
+        /// Save the current context classes data.
+        /// </summary>
         public void Save()
         {
             string location = @"C:\Users\s200503\source\repos\RPGStoreSimulator" + @"\" + this.name + ".txt";

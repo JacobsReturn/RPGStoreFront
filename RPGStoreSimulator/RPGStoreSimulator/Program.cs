@@ -7,6 +7,9 @@ using System.Runtime;
 
 namespace RPGStoreSimulator
 {
+    /// <summary>
+    /// Base class for the RPGStoreSimulator.
+    /// </summary>
     class Program
     {
         public static List<Commands> commandList; /* Creating a command list for all commands (ease of access). */
@@ -17,7 +20,13 @@ namespace RPGStoreSimulator
         public static Store shop = new Store();
 
         public static BaseItem itemReference = new BaseItem();
-        public static void Print(string str, string col) /* Printing text in colour and a simplier version of Console.WriteLine to ice it off. */
+
+        /// <summary>
+        /// Printing text in colour and a simplier version of Console.WriteLine to ice it off.
+        /// </summary>
+        /// <param name="str">The text to be printed.</param>
+        /// <param name="col">The colour in text form. Example: "Green".</param>
+        public static void Print(string str, string col)
         {
             Type type = typeof(ConsoleColor);
 
@@ -27,7 +36,13 @@ namespace RPGStoreSimulator
             Console.ResetColor();
         }
 
-        static void CreateItem(string name, string description, int cost) /* Creating items, easier then just having a bunch of code everywhere for each item. */
+        /// <summary>
+        /// Creates items for global use that can be accessed by a player and the store.
+        /// </summary>
+        /// <param name="name">Name of the item. Example: "God Sword".</param>
+        /// <param name="description">The description of the item so the user can understand its importance/use.</param>
+        /// <param name="cost">How much the user has to pay for it.</param>
+        public static void CreateItem(string name, string description, int cost)
         {
             BaseItem item = new BaseItem();
             item.SetName(name);
@@ -37,6 +52,11 @@ namespace RPGStoreSimulator
             itemList.Add(item);
         }
 
+        /// <summary>
+        /// Grab any item by its name alone from the list of items (itemList).
+        /// </summary>
+        /// <param name="name">The name of the item (this will be the first item with the result)</param>
+        /// <returns>Returns the BaseItem item, the item as its class as a whole.</returns>
         public static BaseItem GetItem(string name) /* Grabbing an item by using its name. */
         {
             foreach (BaseItem item in itemList)
@@ -88,26 +108,29 @@ namespace RPGStoreSimulator
             }
         }
 
-        static void Think() /* Something that is run every tick */
+        /// <summary>
+        /// Called every time the while loop restarts.
+        /// </summary>
+        static void Think()
         {
             string stringReadLine = Console.ReadLine();
 
             foreach (Commands command in commandList)
             {
-                if (command.stringCommand.Length <= stringReadLine.Length)
+                if (command.stringCommand.Length <= stringReadLine.Length) /* Making sure the command itself is below the length of the current text */
                 {
-                    string subCommand = stringReadLine.Substring(0, command.stringCommand.Length);
+                    string subCommand = stringReadLine.Substring(0, command.stringCommand.Length); /* Culling unwanted parts of the command turning it into arguments */
 
                     if (command.CanRun(subCommand)) /* Checking if the command is the same */
                     {
                         string subArg = subCommand;
 
-                        if (stringReadLine.Length > command.stringCommand.Length)
+                        if (stringReadLine.Length > command.stringCommand.Length) /* Checking for arguments */
                         {
                             subArg = stringReadLine.Substring(command.stringCommand.Length + 1, stringReadLine.Length - command.stringCommand.Length - 1); 
                         }
 
-                        command.Execute(subArg);
+                        command.Execute(subArg); /* Running attached function with possible argument */
                     }
                 }
             }
