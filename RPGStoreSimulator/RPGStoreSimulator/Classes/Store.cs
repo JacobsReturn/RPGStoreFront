@@ -6,6 +6,9 @@ using System.Text;
 using System.Runtime;
 
 /* File is for Item and Inventory system */
+/// <summary>
+/// RPGStoreSimulator is for the RPG store and the user, with many inventory, write, saving, storage and other capabilities. Made for an AIE Assessment.
+/// </summary>
 namespace RPGStoreSimulator
 {
     /* Classes */
