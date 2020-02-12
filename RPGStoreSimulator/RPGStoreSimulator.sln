@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPGStoreSimulator", "RPGStoreSimulator\RPGStoreSimulator.csproj", "{1958761E-CED4-4259-83B3-35E655F17284}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1958761E-CED4-4259-83B3-35E655F17284}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1958761E-CED4-4259-83B3-35E655F17284}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1958761E-CED4-4259-83B3-35E655F17284}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1958761E-CED4-4259-83B3-35E655F17284}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4D1BC9C4-823A-4A3E-91EF-D08B92E6BB58}
+	EndGlobalSection
+EndGlobal
