@@ -100,7 +100,7 @@ namespace RPGStoreSimulator
         /// </summary>
         public void Load()
         {
-            string location = @"C:\Users\s200503\source\repos\RPGStoreSimulator" + @"\" + this.name + ".txt";
+            string location = repo + @"\" + this.name + @".txt";
             string[] text = File.ReadAllLines(location);
 
             if (text.Length > 0) 
@@ -130,7 +130,7 @@ namespace RPGStoreSimulator
         /// </summary>
         public void Save()
         {
-            string location = @"C:\Users\s200503\source\repos\RPGStoreSimulator" + @"\" + this.name + ".txt";
+            string location = repo + @"\" + this.name + @".txt";
             string[] lines = new string[inventoryList.Count + 1];
             lines[0] = this.balance.ToString();
 
@@ -178,7 +178,7 @@ namespace RPGStoreSimulator
                 if (balance >= item.Cost)
                 {
                     balance -= item.Cost;
-                    Print("You purchased: " + item.GetName() + " for $" + item.Cost + ". Your balance is now: $" + balance, "Green");
+                    Print("You purchased: " + item.GetName() + " for $" + item.Cost + ". Your balance is now: $" + balance, ConsoleColor.Green);
 
                     AddItem(item, 1);
 
@@ -186,12 +186,12 @@ namespace RPGStoreSimulator
                 }
                 else
                 {
-                    Print("You cannot afford the " + item.GetName() + "!", "Red");
+                    Print("You cannot afford the " + item.GetName() + "!", ConsoleColor.Red);
                 }
             }
             else
             {
-                Print("You cannot buy an item that Garvalsh doesn't own.", "Red");
+                Print("You cannot buy an item that Garvalsh doesn't own.", ConsoleColor.Red);
             }
         }
         public void SellItem(BaseItem item) /* Sell an item to the store */
@@ -200,7 +200,7 @@ namespace RPGStoreSimulator
             {
                 balance += item.Cost;
 
-                Print("You sold: " + item.GetName() + " for $" + item.Cost + ". Your balance is now: $" + balance, "Green");
+                Print("You sold: " + item.GetName() + " for $" + item.Cost + ". Your balance is now: $" + balance, ConsoleColor.Green);
 
                 shop.AddItem(item, 1);
 
@@ -208,7 +208,7 @@ namespace RPGStoreSimulator
             }
             else
             {
-                Print("You cannot sell an item you don't own.", "Red");
+                Print("You cannot sell an item you don't own.", ConsoleColor.Red);
             }
         }
     }
@@ -348,16 +348,16 @@ namespace RPGStoreSimulator
         {
             string spacing = "  ";
 
-            Print("\x25BA Inspecting Item \x25C4", "White");
-            Print($"[{this.Icon}] {this.GetName()}", "White");
-            Print($"{spacing}Description: {this.GetDescription()}", "White");
+            Print("\x25BA Inspecting Item \x25C4", ConsoleColor.White);
+            Print($"[{this.Icon}] {this.GetName()}", ConsoleColor.White);
+            Print($"{spacing}Description: {this.GetDescription()}", ConsoleColor.White);
             Print($"{spacing}Type: {this.GetCategory()}", "White");
-            Print($"{spacing}Rarity: {RarityColours[this.GetRarity() - 1,0]}", "White");
-            Print($"{spacing}Stats:", "White");
+            Print($"{spacing}Rarity: {RarityColours[this.GetRarity() - 1,0]}", ConsoleColor.White);
+            Print($"{spacing}Stats:", ConsoleColor.White);
 
             foreach (string stat in this.Stats)
             {
-                Print($"{spacing} - {stat}", "White");
+                Print($"{spacing} - {stat}", ConsoleColor.White);
             }
         }
 

@@ -21,6 +21,8 @@ namespace RPGStoreSimulator
 
         public static BaseItem itemReference = new BaseItem();
 
+        public static string repo = Environment.CurrentDirectory;
+
         public static string[,] RarityColours = new string[5,2]{
             { "Legendary", "Yellow" }, 
             { "Epic", "Magenta" }, 
@@ -33,13 +35,23 @@ namespace RPGStoreSimulator
         /// Printing text in colour and a simplier version of Console.WriteLine to ice it off.
         /// </summary>
         /// <param name="str">The text to be printed.</param>
-        /// <param name="col">The colour in text form. Example: "Green".</param>
-        public static void Print(string str, string col)
+        /// <param name="col">The colour in text form. (Example: ConsoleColor.Green).</param>
+        public static void Print(string str, ConsoleColor col)
         {
-            Console.ForegroundColor = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), col);
+            Console.ForegroundColor = col;
             Console.WriteLine(str);
 
             Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        /// <summary>
+        /// Printing text in colour and a simplier version of Console.WriteLine to ice it off.
+        /// </summary>
+        /// <param name="str">The text to be printed.</param>
+        /// <param name="col">The colour in text form. Example: "Green".</param>
+        public static void Print(string str, string col)
+        {
+            Print(str, (ConsoleColor)Enum.Parse(typeof(ConsoleColor), col));
         }
 
         /// <summary>
@@ -102,10 +114,10 @@ namespace RPGStoreSimulator
             CreateItem("Dragon Scale Leggings", "Scale Armour.", 2300, "Leggings", 1);
             CreateItem("Dragon Scale Boots", "Scale Armour.", 800, "Boots", 1);
 
-            Print("Type /help for more information on the commands.", "White");
+            Print("Type /help for more information on the commands.", ConsoleColor.White);
 
             /* Checking if files exist */
-            if (!File.Exists(@"C:\Users\s200503\source\repos\RPGStoreSimulator" + @"\" + user.name + ".txt") & !File.Exists(@"C:\Users\s200503\source\repos\RPGStoreSimulator" + @"\" + shop.name + ".txt"))
+            if (!File.Exists(repo + @"\" + user.name + @".txt") & !File.Exists(repo + @"\" + shop.name + @".txt"))
             {
                 /* Giving the user and the shop class an item to have in their inventory */
                 user.AddItem(GetItem("Wooden Sword"), 3);
