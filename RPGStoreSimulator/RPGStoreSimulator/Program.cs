@@ -146,6 +146,7 @@ namespace RPGStoreSimulator
                 new SellCommand(),
                 new InspectCommand(),
                 new SearchCommand(),
+                new CustomCommand(),
             };
 
             while (true) /* Creating our tick */

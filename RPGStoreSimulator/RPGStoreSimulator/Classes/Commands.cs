@@ -54,13 +54,13 @@ namespace RPGStoreSimulator
 
         public override void Execute(string arg)
         {
-            Print("Here are a list of commands: ", "Cyan");
+            Print("Here are a list of commands: ", ConsoleColor.Cyan);
             foreach (Commands command in commandList)
             {
                 if (command.stringCommand != "/help")
                 {
-                    Print(textSpacing + "- " + command.stringCommand, "White");
-                    Print(textSpacing + "  " + command.commandHelp, "Blue");
+                    Print(textSpacing + "- " + command.stringCommand, ConsoleColor.White);
+                    Print(textSpacing + "  " + command.commandHelp, ConsoleColor.Blue);
                     Console.WriteLine("");
                 }
             }
@@ -79,21 +79,46 @@ namespace RPGStoreSimulator
 
         public override void Execute(string arg)
         {
-            itemList.Sort((x, y) => x.GetRarity().CompareTo(y.GetRarity()));
-
-            Print($"Here are a list of results for: {arg}.", "Cyan");
-
-            foreach (BaseItem item in itemList)
+            if (arg.Length > 0 & arg != this.stringCommand)
             {
-                string input = item.GetName();
+                itemList.Sort((x, y) => x.GetRarity().CompareTo(y.GetRarity()));
 
-                if (input.ToLower().Contains(arg))
+                Print($"Here are a list of results for: {arg}.", ConsoleColor.Cyan);
+
+                foreach (BaseItem item in itemList)
                 {
-                    item.NicePrint("  - ");
-                }
+                    string input = item.GetName();
 
-               
+                    if (input.ToLower().Contains(arg))
+                    {
+                        item.NicePrint("  - ");
+                    }
+
+
+                }
             }
+            else Print("You cant search nothing, use '/search {item name}'.", ConsoleColor.Red);
+        }
+    }
+
+    class CustomCommand : Commands
+    {
+        public CustomCommand()
+        {
+            this.SetCommand("/admin_create", "Creates items that save to a data file for use later (will be added to the store).");
+        }
+
+        public override void Execute(string arg)
+        {
+            string[] args = arg.Split(',');
+
+            if (args.Length > 2 & arg != this.stringCommand)
+            {
+                Print($"Trying to create custom: {args[0]}.", ConsoleColor.Cyan);
+                Print(arg, ConsoleColor.White);
+                Print(args[1], ConsoleColor.White);
+            }
+            else Print("You cant create nothing, use '/admin_create {item name},{description},{cost},{type},{rarity}'.", ConsoleColor.Red);
         }
     }
 
@@ -108,9 +133,9 @@ namespace RPGStoreSimulator
         {
             user.atStore = true;
 
-            Print("Garvalsh \x25BA Welcome to Garvalsh's \x25D8 Weaponry and Armoury! \x25D8", "Cyan");
-            Print("Garvalsh \x25BA Here are my current supplies! Hopefully you will buy something traveller!", "Cyan");
-            Print(" You currently have: $" + user.balance, "Green");
+            Print("Garvalsh \x25BA Welcome to Garvalsh's \x25D8 Weaponry and Armoury! \x25D8", ConsoleColor.Cyan);
+            Print("Garvalsh \x25BA Here are my current supplies! Hopefully you will buy something traveller!", ConsoleColor.Cyan);
+            Print(" You currently have: $" + user.balance, ConsoleColor.Green);
 
             shop.GetInventory(textSpacing + "- ");
         }
@@ -125,8 +150,8 @@ namespace RPGStoreSimulator
 
         public override void Execute(string arg)
         {
-            Print("You currently have: $" + user.balance, "Green");
-            Print("Your Inventory:", "White");
+            Print("You currently have: $" + user.balance, ConsoleColor.Green);
+            Print("Your Inventory:", ConsoleColor.White);
 
             user.GetInventory(textSpacing + "- ");
         }
@@ -158,10 +183,10 @@ namespace RPGStoreSimulator
 
                 if (!found)
                 {
-                    Print("The item " + arg + " does not exist.", "Red");
+                    Print("The item " + arg + " does not exist.", ConsoleColor.Red);
                 }
             }
-            else if (user.atStore) Print("You cant inspect nothing, use '/inspect {item name}'.", "Red");
+            else Print("You cant inspect nothing, use '/inspect {item name}'.", ConsoleColor.Red);
         }
     }
 
@@ -174,11 +199,11 @@ namespace RPGStoreSimulator
 
         public override void Execute(string arg)
         {
-            if (!user.atStore) Print("You must be at the store to buy stuff!", "Red");
+            if (!user.atStore) Print("You must be at the store to buy stuff!", ConsoleColor.Red);
 
             if (user.atStore & arg.Length > 0 & arg != this.stringCommand)
             {
-                if (shop.inventoryList.Count < 1) Print("You cannot buy an item Galvash doesn't own.", "Red");
+                if (shop.inventoryList.Count < 1) Print("You cannot buy an item Galvash doesn't own.", ConsoleColor.Red);
 
                 bool found = false;
                 foreach (BaseItem item in shop.inventoryList)
@@ -195,10 +220,10 @@ namespace RPGStoreSimulator
 
                 if (!found)
                 {
-                    Print("Galvash does not own the item " + arg + ".", "Red");
+                    Print("Galvash does not own the item " + arg + ".", ConsoleColor.Red);
                 }
             }
-            else if (user.atStore) Print("You cant buy nothing, use '/buy {item name}', and use /store to find a list of items for purchase.", "Red");
+            else if (user.atStore) Print("You cant buy nothing, use '/buy {item name}', and use /store to find a list of items for purchase.", ConsoleColor.Red);
         }
     }
 
@@ -211,12 +236,12 @@ namespace RPGStoreSimulator
 
         public override void Execute(string arg)
         {
-            if (!user.atStore) Print("You must be at the store to sell stuff!", "Red");
+            if (!user.atStore) Print("You must be at the store to sell stuff!", ConsoleColor.Red);
 
             bool found = false;
             if (user.atStore & arg.Length >= 0 & arg != this.stringCommand)
             {
-                if (user.inventoryList.Count < 1) Print("You cannot sell an item you don't own.", "Red");
+                if (user.inventoryList.Count < 1) Print("You cannot sell an item you don't own.", ConsoleColor.Red);
 
                 foreach (BaseItem item in user.inventoryList)
                 {
@@ -230,9 +255,9 @@ namespace RPGStoreSimulator
                     }
                 }
 
-                if (!found) Print("Galvash does not own the item " + arg + ".", "Red");
+                if (!found) Print("Galvash does not own the item " + arg + ".", ConsoleColor.Red);
             }
-            else if (user.atStore) Print("You cannot sell 'nothing', use '/sell {item name}', and use /inventory to find a list of items to sell.", "Red");
+            else if (user.atStore) Print("You cannot sell 'nothing', use '/sell {item name}', and use /inventory to find a list of items to sell.", ConsoleColor.Red);
         }
     }
 }
