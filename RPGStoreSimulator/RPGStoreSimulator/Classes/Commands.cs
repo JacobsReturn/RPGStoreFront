@@ -10,11 +10,13 @@ namespace RPGStoreSimulator
     internal class Commands : Program
     {
         public string stringCommand;
+        public string commandHelp;
         public string textSpacing = "  ";
 
         public Commands()
         {
             this.stringCommand = "/unknown";
+            this.commandHelp = "This command has no meaning, sorry.";
         }
 
         public virtual void Execute(string arg)
@@ -27,7 +29,17 @@ namespace RPGStoreSimulator
             return (command.ToLower() == this.stringCommand.ToLower());
         }
 
-        public void SetCommand(string command)
+        /// <summary>
+        /// Set the command and helper description of the command.
+        /// </summary>
+        /// <param name="command">The command to type can be anything. Example: "/help".</param>
+        /// <param name="help">The message it displays when using the command to help the user.</param>
+        public void SetCommand(string command, string help)
+        {
+            SetCommand(command);
+            this.commandHelp = help;
+        }
+        public void SetCommand(string command) // Easy way to not use multiple args ;)
         {
             this.stringCommand = command;
         }
@@ -37,16 +49,51 @@ namespace RPGStoreSimulator
     {
         public HelpCommand()
         {
-            this.SetCommand("/help");
+            this.SetCommand("/help", "To get some help.");
         }
 
         public override void Execute(string arg)
         {
-            Print("Here are a list of commands: ", "White");
-            Print(textSpacing + "- /store (takes you to the store)", "White");
-            Print(textSpacing + "- /buy (allows you to select an item to purchase)", "White");
-            Print(textSpacing + "- /inventory (allows you to view your inventory)", "White");
-            Print(textSpacing + "- /sell (allows you to sell your items)", "White");
+            Print("Here are a list of commands: ", "Cyan");
+            foreach (Commands command in commandList)
+            {
+                if (command.stringCommand != "/help")
+                {
+                    Print(textSpacing + "- " + command.stringCommand, "White");
+                    Print(textSpacing + "  " + command.commandHelp, "Blue");
+                    Console.WriteLine("");
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Search bar for console.
+    /// </summary>
+    class SearchCommand : Commands
+    {
+        public SearchCommand()
+        {
+            this.SetCommand("/search", "To search for items.");
+        }
+
+        public override void Execute(string arg)
+        {
+            itemList.Sort((x, y) => x.GetRarity().CompareTo(y.GetRarity()));
+
+            Print($"Here are a list of results for: {arg}.", "Cyan");
+
+            foreach (BaseItem item in itemList)
+            {
+                string input = item.GetName();
+
+                if (input.ToLower().Contains(arg))
+                {
+                    item.NicePrint("  - ");
+                }
+
+               
+            }
         }
     }
 
@@ -54,15 +101,15 @@ namespace RPGStoreSimulator
     {
         public StoreCommand()
         {
-            this.SetCommand("/store");
+            this.SetCommand("/store", "Used to enter Garvalsh's store, and to display the list of items available for purchase.");
         }
 
         public override void Execute(string arg)
         {
             user.atStore = true;
 
-            Print("Garvalsh > Welcome to Garvalsh's Weaponry and Armour!", "Cyan");
-            Print("Garvalsh > Here are my current supplies! Hopefully you will buy something traveller!", "Cyan");
+            Print("Garvalsh \x25BA Welcome to Garvalsh's \x25D8 Weaponry and Armoury! \x25D8", "Cyan");
+            Print("Garvalsh \x25BA Here are my current supplies! Hopefully you will buy something traveller!", "Cyan");
             Print(" You currently have: $" + user.balance, "Green");
 
             shop.GetInventory(textSpacing + "- ");
@@ -73,7 +120,7 @@ namespace RPGStoreSimulator
     {
         public InventoryCommand()
         {
-            this.SetCommand("/inventory");
+            this.SetCommand("/inventory", "Used to open and view your current inventory.");
         }
 
         public override void Execute(string arg)
@@ -85,11 +132,44 @@ namespace RPGStoreSimulator
         }
     }
 
+    class InspectCommand : Commands
+    {
+        public InspectCommand()
+        {
+            this.SetCommand("/inspect", "Used to insect any item in the game. (Usage: /inspect God Spear)");
+        }
+
+        public override void Execute(string arg)
+        {
+            if (arg.Length > 0 & arg != this.stringCommand)
+            {
+                bool found = false;
+                foreach (BaseItem item in shop.inventoryList)
+                {
+                    string itemName = item.GetName();
+                    if (arg == itemName)
+                    {
+                        item.PrintInfo();
+                        found = true;
+
+                        break;
+                    }
+                }
+
+                if (!found)
+                {
+                    Print("The item " + arg + " does not exist.", "Red");
+                }
+            }
+            else if (user.atStore) Print("You cant inspect nothing, use '/inspect {item name}'.", "Red");
+        }
+    }
+
     class BuyCommand : Commands
     {
         public BuyCommand()
         {
-            this.SetCommand("/buy");
+            this.SetCommand("/buy", "Used to buy an item from Garvalsh's store. (Usage: /buy God Spear)");
         }
 
         public override void Execute(string arg)
@@ -126,7 +206,7 @@ namespace RPGStoreSimulator
     {
         public SellCommand()
         {
-            this.SetCommand("/sell");
+            this.SetCommand("/sell", "Used to sell an item from your inventory to Garvalsh. (Example: /sell Wooden Sword)");
         }
 
         public override void Execute(string arg)

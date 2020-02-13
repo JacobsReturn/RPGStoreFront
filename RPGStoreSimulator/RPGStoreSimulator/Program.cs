@@ -21,6 +21,14 @@ namespace RPGStoreSimulator
 
         public static BaseItem itemReference = new BaseItem();
 
+        public static string[,] RarityColours = new string[5,2]{
+            { "Legendary", "Yellow" }, 
+            { "Epic", "Magenta" }, 
+            { "Rare", "Cyan" }, 
+            { "Uncommon", "DarkGreen" }, 
+            { "Common", "Gray" }
+        };
+
         /// <summary>
         /// Printing text in colour and a simplier version of Console.WriteLine to ice it off.
         /// </summary>
@@ -28,12 +36,10 @@ namespace RPGStoreSimulator
         /// <param name="col">The colour in text form. Example: "Green".</param>
         public static void Print(string str, string col)
         {
-            Type type = typeof(ConsoleColor);
-
-            Console.ForegroundColor = (ConsoleColor)Enum.Parse(type, col);
+            Console.ForegroundColor = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), col);
             Console.WriteLine(str);
 
-            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         /// <summary>
@@ -42,14 +48,22 @@ namespace RPGStoreSimulator
         /// <param name="name">Name of the item. Example: "God Sword".</param>
         /// <param name="description">The description of the item so the user can understand its importance/use.</param>
         /// <param name="cost">How much the user has to pay for it.</param>
-        public static void CreateItem(string name, string description, int cost)
+        public static void CreateItem(string name, string description, int cost, string category, int rarity, string[] stats)
         {
             BaseItem item = new BaseItem();
             item.SetName(name);
             item.SetDescription(description);
             item.SetCost(cost);
+            item.SetCategory(category);
+            item.SetRarity(rarity);
+            item.SetStats(stats);
 
             itemList.Add(item);
+        }
+
+        public static void CreateItem(string name, string description, int cost, string category, int rarity)
+        {
+            CreateItem(name, description, cost, category, rarity, new string[] { });
         }
 
         /// <summary>
@@ -72,9 +86,21 @@ namespace RPGStoreSimulator
 
         static void Main()
         {
+            Console.OutputEncoding = Encoding.UTF8; // Used for \x character map numbers later on.
+
             /* Adding items */
-            CreateItem("God Spear", "The spear of the ages, something so powerful a mere mortal would crumble in fear", 1100);
-            CreateItem("Wooden Sword", "A sturdy piece of wood capable of barely damaging your enemies", 85);
+            CreateItem("Heavens Penetration", "The spear of the ages, something so powerful a mere mortal would crumble in fear.", 1800, "Spear", 1);
+            CreateItem("Hell Daggers", "The daggers born from hell itself.", 1600, "Daggers", 1);
+            CreateItem("Frost Staff", "Allows the wielder to shoot powerful ice bolts.", 1300, "Magic Staff", 1);
+            CreateItem("Wooden Sword", "A sturdy piece of wood capable of barely damaging your enemies", 8, "Sword", 5);
+            CreateItem("Slime Skin", "Skin of a slime.", 18, "Item", 5);
+            CreateItem("Dragon Scale", "A scale of a dragon.", 1000, "Item", 1);
+            CreateItem("Golden Feather", "The feather of a golden duck.", 630, "Item", 2);
+            CreateItem("Poison Staff", "A staff that can poison the target.", 800, "Magic Staff", 2);
+            CreateItem("Dragon Scale Chestplate", "Scale Armour.", 2500, "Chestplate", 1);
+            CreateItem("Dragon Scale Helmet", "Scale Armour.", 1800, "Helmet", 1);
+            CreateItem("Dragon Scale Leggings", "Scale Armour.", 2300, "Leggings", 1);
+            CreateItem("Dragon Scale Boots", "Scale Armour.", 800, "Boots", 1);
 
             Print("Type /help for more information on the commands.", "White");
 
@@ -83,7 +109,13 @@ namespace RPGStoreSimulator
             {
                 /* Giving the user and the shop class an item to have in their inventory */
                 user.AddItem(GetItem("Wooden Sword"), 3);
-                shop.AddItem(GetItem("God Spear"), 1);
+                user.AddItem(GetItem("Dragon Scale"), 1);
+                user.AddItem(GetItem("Slime Skin"), 4);
+
+                foreach (BaseItem item in itemList)
+                {
+                    shop.AddItem(GetItem(item.GetName()), item.GetRarity());
+                }
             }
             else
             {
@@ -100,6 +132,8 @@ namespace RPGStoreSimulator
                 new InventoryCommand(),
                 new BuyCommand(),
                 new SellCommand(),
+                new InspectCommand(),
+                new SearchCommand(),
             };
 
             while (true) /* Creating our tick */

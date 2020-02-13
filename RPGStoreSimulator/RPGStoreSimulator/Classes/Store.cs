@@ -6,6 +6,7 @@ using System.Text;
 using System.Runtime;
 
 /* File is for Item and Inventory system */
+
 /// <summary>
 /// RPGStoreSimulator is for the RPG store and the user, with many inventory, write, saving, storage and other capabilities. Made for an AIE Assessment.
 /// </summary>
@@ -45,9 +46,20 @@ namespace RPGStoreSimulator
         /// <param name="spacing">String spacing between the text and the side. Example: "   " (which is three spaces to the right).</param>
         public void GetInventory(string spacing)
         {
+            inventoryList.Sort((x, y) => x.GetCost().CompareTo(y.GetCost()));
+            inventoryList.Sort((x, y) => x.GetRarity().CompareTo(y.GetRarity()));
+
+            bool[] rarities = new bool[5]{false, false, false, false, false};
+
             foreach (BaseItem item in inventoryList)
             {
-                item.NicePrint(spacing);
+                if (!rarities[item.GetRarity() - 1])
+                {
+                    Print($"   {RarityColours[item.GetRarity() - 1, 0]}", RarityColours[item.GetRarity() - 1, 1]);
+                    rarities[item.GetRarity() - 1] = true;
+                }
+
+                item.NicePrint(spacing, true);
             }
         }
 
@@ -215,6 +227,10 @@ namespace RPGStoreSimulator
         public string Name;
         public string Description;
         public int Cost;
+        public string Category;
+        public int Rarity;
+        public string[] Stats = new string[] { };
+        public string Icon;
         public string usedBy;
 
         public BaseItem() /* Constructor. */
@@ -222,6 +238,9 @@ namespace RPGStoreSimulator
             this.Name = "Unknown";
             this.Description = "Unknown";
             this.Cost = 0;
+            this.Category = "Sword";
+            this.Rarity = 4;
+            this.Icon = "";
             this.usedBy = "0";
         }
 
@@ -240,6 +259,58 @@ namespace RPGStoreSimulator
             this.Cost = value;
         }
 
+        public void SetRarity(int value) /* Setting item rarity. */
+        {
+            this.Rarity = value;
+        }
+
+        public void SetCategory(string value) /* Setting item category. */
+        {
+            this.Category = value;
+
+            if (value == "Sword")
+            {
+                this.Icon = "\x2666";
+            }
+            else if (value == "Spear")
+            {
+                this.Icon = "\x2660";
+            }
+            else if (value == "Daggers")
+            {
+                this.Icon = "\x2663";
+            }
+            else if (value == "Magic Staff")
+            {
+                this.Icon = "\x2736";
+            }
+            else if (value == "Helmet")
+            {
+                this.Icon = "\x263C";
+            }
+            else if (value == "Chestplate")
+            {
+                this.Icon = "\x263C";
+            }
+            else if (value == "Leggings")
+            {
+                this.Icon = "\x263C";
+            }
+            else if (value == "Boots")
+            {
+                this.Icon = "\x263C";
+            }
+            else if (value == "Item")
+            {
+                this.Icon = "\x25CA";
+            }
+        }
+
+        public void SetStats(string[] values) /* Setting item rarity. */
+        {
+            this.Stats = values;
+        }
+
         public string GetName() /* Grabbing items name. */
         {
             return this.Name;
@@ -255,9 +326,55 @@ namespace RPGStoreSimulator
             return this.Cost;
         }
 
+        public string GetCategory() /* Get the type aka Staff, Sword etc. */
+        {
+            return this.Category;
+        }
+
+        public int GetRarity() /* Get the rarity of the item. */
+        {
+            return this.Rarity;
+        }
+
+        public string[] GetStats() /* Get the stats of the item. */
+        {
+            return this.Stats;
+        }
+
+        /// <summary>
+        /// Used to print the full info, category, stats, etc.
+        /// </summary>
+        public void PrintInfo()
+        {
+            string spacing = "  ";
+
+            Print("\x25BA Inspecting Item \x25C4", "White");
+            Print($"[{this.Icon}] {this.GetName()}", "White");
+            Print($"{spacing}Description: {this.GetDescription()}", "White");
+            Print($"{spacing}Type: {this.GetCategory()}", "White");
+            Print($"{spacing}Rarity: {RarityColours[this.GetRarity() - 1,0]}", "White");
+            Print($"{spacing}Stats:", "White");
+
+            foreach (string stat in this.Stats)
+            {
+                Print($"{spacing} - {stat}", "White");
+            }
+        }
+
+        public void NicePrint(string spacing, bool cost)
+        {
+            string display = this.GetName();
+            if (cost)
+            {
+                display = $"{display} \x25BA ${this.GetCost()} "; // \x is used for symbols <3
+            }
+
+            Print($"{spacing}[{this.Icon}] {display}", RarityColours[this.GetRarity() - 1,1]);
+        }
+
         public void NicePrint(string spacing)
         {
-            Print("[$" + this.GetCost() + "] " + spacing + this.GetName() + ", " + this.GetDescription(), "White");
+            NicePrint(spacing, false);
         }
     }
 }
