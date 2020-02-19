@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
 using System.Text;
 
 namespace RPGStoreSimulator
@@ -40,7 +39,11 @@ namespace RPGStoreSimulator
         /// <param name="stats">An array of possible stats?</param>
         public static void CreateItem(string name, string description, int cost, string category, int rarity, string[] stats)
         {
-            BaseItem item = new BaseItem();
+            BaseItem item;
+            if (category == "Sword") item = new Sword();
+            else if (category == "Staff") item = new Staff();
+            else item = new BaseItem();
+
             item.SetName(name);
             item.SetDescription(description);
             item.SetCost(cost);

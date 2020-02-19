@@ -140,7 +140,7 @@ namespace RPGStoreSimulator
             Print($"{spacing}Rarity: {RarityColours[this.GetRarity() - 1, 0]}", RarityColours[this.GetRarity() - 1, 1]);
 
             Space();
-            Print($"{spacing}More Info:", ConsoleColor.White);
+            Print($"{spacing}More Info [{this.Stats.Length}]:", ConsoleColor.White);
 
             foreach (string stat in this.Stats)
             {

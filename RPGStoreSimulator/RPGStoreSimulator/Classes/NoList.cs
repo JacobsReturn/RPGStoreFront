@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace RPGStoreSimulator
 {
     /// <summary>
-    /// My new library for not-using lists.
+    /// My new library for not-using lists. (all credit to me)
     /// </summary>
     internal class Table : Program
     {
