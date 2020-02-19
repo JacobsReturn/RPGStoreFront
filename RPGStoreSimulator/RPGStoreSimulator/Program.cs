@@ -1,19 +1,17 @@
 ﻿using System;
 using System.IO;
-using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using System.Runtime;
 
 namespace RPGStoreSimulator
 {
     /// <summary>
     /// Base class for the RPGStoreSimulator.
     /// </summary>
-    class Program
+    class Program : Library
     {
-        public static List<Commands> commandList; /* Creating a command list for all commands (ease of access). */
-        public static List<BaseItem> itemList = new List<BaseItem>(); /* Creating a list for all created items (ease of access). */
+        public static Commands[] commandList; /* Creating a command list for all commands (ease of access). */
+        public static BaseItem[] itemList = new BaseItem[] { }; /* Creating a list for all created items (ease of access). */
 
         /* Creating entities */
         public static Player user = new Player();
@@ -32,34 +30,14 @@ namespace RPGStoreSimulator
         };
 
         /// <summary>
-        /// Printing text in colour and a simplier version of Console.WriteLine to ice it off.
-        /// </summary>
-        /// <param name="str">The text to be printed.</param>
-        /// <param name="col">The colour in text form. (Example: ConsoleColor.Green).</param>
-        public static void Print(string str, ConsoleColor col)
-        {
-            Console.ForegroundColor = col;
-            Console.WriteLine(str);
-
-            Console.ForegroundColor = ConsoleColor.White;
-        }
-
-        /// <summary>
-        /// Printing text in colour and a simplier version of Console.WriteLine to ice it off.
-        /// </summary>
-        /// <param name="str">The text to be printed.</param>
-        /// <param name="col">The colour in text form. Example: "Green".</param>
-        public static void Print(string str, string col)
-        {
-            Print(str, (ConsoleColor)Enum.Parse(typeof(ConsoleColor), col));
-        }
-
-        /// <summary>
         /// Creates items for global use that can be accessed by a player and the store.
         /// </summary>
         /// <param name="name">Name of the item. Example: "God Sword".</param>
         /// <param name="description">The description of the item so the user can understand its importance/use.</param>
         /// <param name="cost">How much the user has to pay for it.</param>
+        /// <param name="category">The type aka Sword, Spear etc.</param>
+        /// <param name="rarity">The rarity as a number, 1 being the best, 5 being the worst.</param>
+        /// <param name="stats">An array of possible stats?</param>
         public static void CreateItem(string name, string description, int cost, string category, int rarity, string[] stats)
         {
             BaseItem item = new BaseItem();
@@ -70,9 +48,17 @@ namespace RPGStoreSimulator
             item.SetRarity(rarity);
             item.SetStats(stats);
 
-            itemList.Add(item);
+            Table.Add(itemList, item, out itemList);
         }
 
+        /// <summary>
+        /// Creates items for global use that can be accessed by a player and the store.
+        /// </summary>
+        /// <param name="name">Name of the item. Example: "God Sword".</param>
+        /// <param name="description">The description of the item so the user can understand its importance/use.</param>
+        /// <param name="cost">How much the user has to pay for it.</param>
+        /// <param name="category">The type aka Sword, Spear etc.</param>
+        /// <param name="rarity">The rarity as a number, 1 being the best, 5 being the worst.</param>
         public static void CreateItem(string name, string description, int cost, string category, int rarity)
         {
             CreateItem(name, description, cost, category, rarity, new string[] { });
@@ -96,23 +82,107 @@ namespace RPGStoreSimulator
             return itemReference; /* Yes, a fall back. I don't trust myself. */
         }
 
+        /// <summary>
+        /// The main function of the program.
+        /// </summary>
         static void Main()
         {
             Console.OutputEncoding = Encoding.UTF8; // Used for \x character map numbers later on.
 
             /* Adding items */
-            CreateItem("Heavens Penetration", "The spear of the ages, something so powerful a mere mortal would crumble in fear.", 1800, "Spear", 1);
-            CreateItem("Hell Daggers", "The daggers born from hell itself.", 1600, "Daggers", 1);
-            CreateItem("Frost Staff", "Allows the wielder to shoot powerful ice bolts.", 1300, "Magic Staff", 1);
-            CreateItem("Wooden Sword", "A sturdy piece of wood capable of barely damaging your enemies", 8, "Sword", 5);
-            CreateItem("Slime Skin", "Skin of a slime.", 18, "Item", 5);
-            CreateItem("Dragon Scale", "A scale of a dragon.", 1000, "Item", 1);
-            CreateItem("Golden Feather", "The feather of a golden duck.", 630, "Item", 2);
-            CreateItem("Poison Staff", "A staff that can poison the target.", 800, "Magic Staff", 2);
-            CreateItem("Dragon Scale Chestplate", "Scale Armour.", 2500, "Chestplate", 1);
-            CreateItem("Dragon Scale Helmet", "Scale Armour.", 1800, "Helmet", 1);
-            CreateItem("Dragon Scale Leggings", "Scale Armour.", 2300, "Leggings", 1);
-            CreateItem("Dragon Scale Boots", "Scale Armour.", 800, "Boots", 1);
+            CreateItem("Heavens Penetration", "A spear so powerful and light, it can kill any opponent swiftly.", 1800, "Spear", 1,
+                new string[2]
+                {
+                    "- Direct Damage: 10000",
+                    "- Swing Speed: 0.2s",
+                }
+            );
+            CreateItem("Hell Daggers", "The dual daggers born from the hell scape itself. Ignites targets on hit.", 1600, "Daggers", 1,
+                new string[4]
+                {
+                    "- Direct Damage: 600/per dagger",
+                    "- Swing Speed: 0.2s/per dagger",
+                    "- Applies <[\x03FE] Ignite> for 13s.",
+                    "            \x25B2 Deals 18 magic damage/s.",
+                }
+            );
+            CreateItem("Frost Staff", "Allows the wielder to shoot powerful ice bolts. The bolts apply frostbite.", 1300, "Magic Staff", 1, 
+                new string[5]
+                { 
+                    "- Direct Damage: 500",
+                    "- Splash Damage: 100",
+                    "- Projectile Speed: 63u/s.",
+                    "- Applies <[\x03FE] Frostbite> for 10s.",
+                    "            \x25B2 Deals 35 magic damage/s.",
+                }
+            );
+            CreateItem("Wooden Sword", "A sturdy piece of wood capable of barely damaging your enemies", 8, "Sword", 5,
+                new string[2]
+                {
+                    "- Direct Damage: 3",
+                    "- Swing Speed: 1.3s",
+                }
+            );
+            CreateItem("Slime Skin", "Skin of a slime.", 18, "Item", 5,
+                new string[1]
+                {
+                    "- Can be used for crafting, very sticky.",
+                }
+            );
+            CreateItem("Dragon Scale", "A scale of a dragon.", 1000, "Item", 1,
+                new string[1]
+                {
+                    "- Can be used for crafting, fire resistant, stronger then most metals, water resistance, highly durable.",
+                }
+            );
+            CreateItem("Golden Feather", "The feather of a golden duck.", 630, "Item", 2,
+                new string[1]
+                {
+                    "- Pure gold, good for crafting/trade.",
+                }
+            );
+            CreateItem("Poison Staff", "A staff that can poison the target.", 800, "Magic Staff", 2,
+                new string[5]
+                {
+                    "- Direct Damage: 170",
+                    "- Splash Damage: 30",
+                    "- Projectile Speed: 25u/s.",
+                    "- Applies <[\x03FE] Poison> for 160s.",
+                    "            \x25B2 Deals 6 pure damage/s.",
+                }
+            );
+            CreateItem("Dragon Scale Chestplate", "Scale Armour.", 2500, "Chestplate", 1,
+                new string[3]
+                {
+                    "- Armour: 500",
+                    "- Fire Resistance: 35%",
+                    "- Damage Reduction: 15%",
+                }
+            );
+            CreateItem("Dragon Scale Helmet", "Scale Armour.", 1800, "Helmet", 1,
+                new string[2]
+                {
+                    "- Armour: 150",
+                    "- Fire Resistance: 15%",
+                }
+            );
+            CreateItem("Dragon Scale Leggings", "Scale Armour.", 2300, "Leggings", 1,
+                new string[2]
+                {
+                    "- Armour: 400",
+                    "- Fire Resistance: 35%",
+                }
+            );
+            CreateItem("Dragon Scale Boots", "Scale Armour.", 800, "Boots", 1,
+                new string[5]
+                {
+                    "- Armour: 50",
+                    "- Fire Resistance: 15%",
+                    "- Speed Bonus: 215%",
+                    "- Gains buff <[\x03FE] Lava Walk> for 10s.",
+                    "               \x25B2 Allows you to walk on lava.",
+                }
+            );
 
             Print("Type /help for more information on the commands.", ConsoleColor.White);
 
@@ -136,8 +206,68 @@ namespace RPGStoreSimulator
                 shop.Load();
             }
 
+            string[] files = Directory.GetFiles(repo + @"\", "*.txt");
+            foreach (string file in files)
+            {
+                if (file.Contains("Item_"))
+                {
+                    string[] text = File.ReadAllLines(file);
+
+                    if (text.Length > 0)
+                    {
+                        string _name = "Unknown";
+                        string _description = "";
+                        int _cost = 1;
+                        string _category = "Sword";
+                        int _rarity = 1;
+                        string[] _stats = { };
+
+                        foreach (string line in text)
+                        {
+                            string[] inputs = line.Split(':');
+
+                            if (inputs.Length > 1)
+                            {
+                                switch (inputs[0])
+                                {
+                                    case "Name":
+                                        _name = inputs[1];
+                                        break;
+                                    case "Description":
+                                        _description = inputs[1];
+                                        break;
+                                    case "Cost":
+                                        if(Int32.TryParse(inputs[1], out int cost))
+                                        {
+                                            _cost = cost;
+                                        }
+                                        
+                                        break;
+                                    case "Category":
+                                        _category = inputs[1];
+                                        break;
+                                    case "Rarity":
+                                        if (Int32.TryParse(inputs[1], out int rarity))
+                                        {
+                                            _rarity = rarity;
+                                        }
+
+                                        break;
+                                    case "Stats":
+                                        if(inputs[1].Split(',').Length > 0) _stats = inputs[1].Split(',');
+                                        break;
+                                }
+                            }
+                        }
+
+                        CreateItem(_name, _description, _cost, _category, _rarity, _stats);
+                        shop.AddItem(GetItem(_name), _rarity);
+                    }
+                }
+            }
+
             /* Creating a list for all of our commands (ease of access). */
-            commandList = new List<Commands>()
+            commandList = new Commands[]
             {
                 new HelpCommand(),
                 new StoreCommand(),

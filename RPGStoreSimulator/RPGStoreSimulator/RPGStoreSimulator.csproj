@@ -5,4 +5,15 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Classes\_backup\**" />
+    <EmbeddedResource Remove="Classes\_backup\**" />
+    <None Remove="Classes\_backup\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Classes\Commands.cs" />
+    <Compile Remove="Classes\Store.cs" />
+  </ItemGroup>
+
 </Project>
