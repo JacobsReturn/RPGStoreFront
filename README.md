@@ -74,7 +74,9 @@ Create a new .cs file and makesure it includes the namespace somehow.
 
 Create a new class, make sure it inherits/derives from the "Commands" class.
 Public the commands starter, and use 
-```C# this.SetCommand(string command, string description)``` 
+```C# 
+this.SetCommand(string command, string description)
+``` 
 inside of it.
 
 Then to have it run when executed, override Execute(string arg), string arg is an argument that can be broken into other arguments by using the Split method.
