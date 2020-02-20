@@ -1,0 +1,11 @@
+C:\Users\s200503\source\repos\RPGStoreSimulator\RPGStoreSimulator\bin\Release\netcoreapp3.1\RPGStoreSimulator.exe
+C:\Users\s200503\source\repos\RPGStoreSimulator\RPGStoreSimulator\bin\Release\netcoreapp3.1\RPGStoreSimulator.deps.json
+C:\Users\s200503\source\repos\RPGStoreSimulator\RPGStoreSimulator\bin\Release\netcoreapp3.1\RPGStoreSimulator.runtimeconfig.json
+C:\Users\s200503\source\repos\RPGStoreSimulator\RPGStoreSimulator\bin\Release\netcoreapp3.1\RPGStoreSimulator.runtimeconfig.dev.json
+C:\Users\s200503\source\repos\RPGStoreSimulator\RPGStoreSimulator\bin\Release\netcoreapp3.1\RPGStoreSimulator.dll
+C:\Users\s200503\source\repos\RPGStoreSimulator\RPGStoreSimulator\bin\Release\netcoreapp3.1\RPGStoreSimulator.pdb
+C:\Users\s200503\source\repos\RPGStoreSimulator\RPGStoreSimulator\obj\Release\netcoreapp3.1\RPGStoreSimulator.csprojAssemblyReference.cache
+C:\Users\s200503\source\repos\RPGStoreSimulator\RPGStoreSimulator\obj\Release\netcoreapp3.1\RPGStoreSimulator.AssemblyInfoInputs.cache
+C:\Users\s200503\source\repos\RPGStoreSimulator\RPGStoreSimulator\obj\Release\netcoreapp3.1\RPGStoreSimulator.AssemblyInfo.cs
+C:\Users\s200503\source\repos\RPGStoreSimulator\RPGStoreSimulator\obj\Release\netcoreapp3.1\RPGStoreSimulator.dll
+C:\Users\s200503\source\repos\RPGStoreSimulator\RPGStoreSimulator\obj\Release\netcoreapp3.1\RPGStoreSimulator.pdb
