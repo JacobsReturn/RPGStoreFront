@@ -43,7 +43,7 @@ namespace RPGStoreSimulator
             if (category == "Sword") item = new Sword();
             else if (category == "Staff") item = new Staff();
             else item = new BaseItem();
-
+            
             item.SetName(name);
             item.SetDescription(description);
             item.SetCost(cost);
@@ -52,6 +52,8 @@ namespace RPGStoreSimulator
             item.SetStats(stats);
 
             Table.Add(itemList, item, out itemList);
+
+            item.Setup();
         }
 
         /// <summary>
@@ -86,106 +88,142 @@ namespace RPGStoreSimulator
         }
 
         /// <summary>
+        /// Saves items for later use in the store.
+        /// </summary>
+        /// <param name="name">Name of the item. Example: "God Sword".</param>
+        /// <param name="description">The description of the item so the user can understand its importance/use.</param>
+        /// <param name="cost">How much the user has to pay for it.</param>
+        /// <param name="category">The type aka Sword, Spear etc.</param>
+        /// <param name="rarity">The rarity as a number, 1 being the best, 5 being the worst.</param>
+        /// <param name="stats">An array of possible stats?</param>
+        public static void SaveItem(string name, string description, int cost, string category, int rarity, string[] stats)
+        {
+            string location = repo + @"\items\Item_" + name + @".txt";
+            string[] lines = new string[6]
+            {          
+                $"Name/{name}",
+                $"Description/{description}",
+                $"Cost/{cost.ToString()}",
+                $"Category/{category}",
+                $"Rarity/{rarity.ToString()}",
+                $"Stats/"
+            };
+
+            foreach (string stat in stats)
+            {
+                lines[5] = lines[5] + $"{stat}";
+                if (stat != stats[stats.Length - 1]) lines[5] = lines[5] + $"|";
+            }
+
+            File.WriteAllLines(location, lines);
+        }
+
+        /// <summary>
         /// The main function of the program.
         /// </summary>
         static void Main()
         {
             Console.OutputEncoding = Encoding.UTF8; // Used for \x character map numbers later on.
 
-            /* Adding items */
-            CreateItem("Heavens Penetration", "A spear so powerful and light, it can kill any opponent swiftly.", 1800, "Spear", 1,
-                new string[2]
-                {
+            if (!Directory.Exists(repo + @"\items"))
+            {
+                Directory.CreateDirectory(repo + @"\items");
+
+                /* Adding items */
+                SaveItem("Heavens Penetration", "A spear so powerful and light, it can kill any opponent swiftly.", 1800, "Spear", 1,
+                    new string[2]
+                    {
                     "- Direct Damage: 10000",
                     "- Swing Speed: 0.2s",
-                }
-            );
-            CreateItem("Hell Daggers", "The dual daggers born from the hell scape itself. Ignites targets on hit.", 1600, "Daggers", 1,
-                new string[4]
-                {
+                    }
+                );
+                SaveItem("Hell Daggers", "The dual daggers born from the hell scape itself. Ignites targets on hit.", 1600, "Daggers", 1,
+                    new string[4]
+                    {
                     "- Direct Damage: 600/per dagger",
                     "- Swing Speed: 0.2s/per dagger",
                     "- Applies <[\x03FE] Ignite> for 13s.",
                     "            \x25B2 Deals 18 magic damage/s.",
-                }
-            );
-            CreateItem("Frost Staff", "Allows the wielder to shoot powerful ice bolts. The bolts apply frostbite.", 1300, "Magic Staff", 1, 
-                new string[5]
-                { 
+                    }
+                );
+                SaveItem("Frost Staff", "Allows the wielder to shoot powerful ice bolts. The bolts apply frostbite.", 1300, "Magic Staff", 1,
+                    new string[5]
+                    {
                     "- Direct Damage: 500",
                     "- Splash Damage: 100",
                     "- Projectile Speed: 63u/s.",
                     "- Applies <[\x03FE] Frostbite> for 10s.",
                     "            \x25B2 Deals 35 magic damage/s.",
-                }
-            );
-            CreateItem("Wooden Sword", "A sturdy piece of wood capable of barely damaging your enemies", 8, "Sword", 5,
-                new string[2]
-                {
+                    }
+                );
+                SaveItem("Wooden Sword", "A sturdy piece of wood capable of barely damaging your enemies", 8, "Sword", 5,
+                    new string[2]
+                    {
                     "- Direct Damage: 3",
                     "- Swing Speed: 1.3s",
-                }
-            );
-            CreateItem("Slime Skin", "Skin of a slime.", 18, "Item", 5,
-                new string[1]
-                {
+                    }
+                );
+                SaveItem("Slime Skin", "Skin of a slime.", 18, "Item", 5,
+                    new string[1]
+                    {
                     "- Can be used for crafting, very sticky.",
-                }
-            );
-            CreateItem("Dragon Scale", "A scale of a dragon.", 1000, "Item", 1,
-                new string[1]
-                {
+                    }
+                );
+                SaveItem("Dragon Scale", "A scale of a dragon.", 1000, "Item", 1,
+                    new string[1]
+                    {
                     "- Can be used for crafting, fire resistant, stronger then most metals, water resistance, highly durable.",
-                }
-            );
-            CreateItem("Golden Feather", "The feather of a golden duck.", 630, "Item", 2,
-                new string[1]
-                {
+                    }
+                );
+                SaveItem("Golden Feather", "The feather of a golden duck.", 630, "Item", 2,
+                    new string[1]
+                    {
                     "- Pure gold, good for crafting/trade.",
-                }
-            );
-            CreateItem("Poison Staff", "A staff that can poison the target.", 800, "Magic Staff", 2,
-                new string[5]
-                {
+                    }
+                );
+                SaveItem("Poison Staff", "A staff that can poison the target.", 800, "Magic Staff", 2,
+                    new string[5]
+                    {
                     "- Direct Damage: 170",
                     "- Splash Damage: 30",
                     "- Projectile Speed: 25u/s.",
                     "- Applies <[\x03FE] Poison> for 160s.",
                     "            \x25B2 Deals 6 pure damage/s.",
-                }
-            );
-            CreateItem("Dragon Scale Chestplate", "Scale Armour.", 2500, "Chestplate", 1,
-                new string[3]
-                {
+                    }
+                );
+                SaveItem("Dragon Scale Chestplate", "Scale Armour.", 2500, "Chestplate", 1,
+                    new string[3]
+                    {
                     "- Armour: 500",
                     "- Fire Resistance: 35%",
                     "- Damage Reduction: 15%",
-                }
-            );
-            CreateItem("Dragon Scale Helmet", "Scale Armour.", 1800, "Helmet", 1,
-                new string[2]
-                {
+                    }
+                );
+                SaveItem("Dragon Scale Helmet", "Scale Armour.", 1800, "Helmet", 1,
+                    new string[2]
+                    {
                     "- Armour: 150",
                     "- Fire Resistance: 15%",
-                }
-            );
-            CreateItem("Dragon Scale Leggings", "Scale Armour.", 2300, "Leggings", 1,
-                new string[2]
-                {
+                    }
+                );
+                SaveItem("Dragon Scale Leggings", "Scale Armour.", 2300, "Leggings", 1,
+                    new string[2]
+                    {
                     "- Armour: 400",
                     "- Fire Resistance: 35%",
-                }
-            );
-            CreateItem("Dragon Scale Boots", "Scale Armour.", 800, "Boots", 1,
-                new string[5]
-                {
+                    }
+                );
+                SaveItem("Dragon Scale Boots", "Scale Armour.", 800, "Boots", 1,
+                    new string[5]
+                    {
                     "- Armour: 50",
                     "- Fire Resistance: 15%",
                     "- Speed Bonus: 215%",
                     "- Gains buff <[\x03FE] Lava Walk> for 10s.",
                     "               \x25B2 Allows you to walk on lava.",
-                }
-            );
+                    }
+                );
+            }
 
             Print("Type /help for more information on the commands.", ConsoleColor.White);
 
@@ -209,7 +247,7 @@ namespace RPGStoreSimulator
                 shop.Load();
             }
 
-            string[] files = Directory.GetFiles(repo + @"\", "*.txt");
+            string[] files = Directory.GetFiles(repo + @"\items\", "*.txt");
             foreach (string file in files)
             {
                 if (file.Contains("Item_"))
@@ -227,7 +265,7 @@ namespace RPGStoreSimulator
 
                         foreach (string line in text)
                         {
-                            string[] inputs = line.Split(':');
+                            string[] inputs = line.Split('/');
 
                             if (inputs.Length > 1)
                             {
@@ -257,12 +295,12 @@ namespace RPGStoreSimulator
 
                                         break;
                                     case "Stats":
-                                        if(inputs[1].Split(',').Length > 0) _stats = inputs[1].Split(',');
+                                        if (inputs[1].Split('|').Length > 0) _stats = inputs[1].Split('|');
                                         break;
                                 }
                             }
                         }
-
+                        
                         CreateItem(_name, _description, _cost, _category, _rarity, _stats);
                         shop.AddItem(GetItem(_name), _rarity);
                     }

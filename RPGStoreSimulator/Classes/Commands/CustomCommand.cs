@@ -17,7 +17,7 @@ namespace RPGStoreSimulator
         {
             string[] args = arg.Split(',');
 
-            if (args.Length > 2 & arg != this.stringCommand & args.Length >= 5)
+            if (arg != this.stringCommand & args.Length >= 5)
             {
                 Print($"Trying to create custom: {args[0]}.", ConsoleColor.Cyan);
 
@@ -26,19 +26,25 @@ namespace RPGStoreSimulator
 
                 if (canCost & canRarity)
                 {
-                    CreateItem(args[0], args[1], cost, args[3], rarity);
+                    string _stats = "";
+                    if (args.Length > 5)
+                    {
+                        _stats = args[5];
+                    }
+
+                    CreateItem(args[0], args[1], cost, args[3], rarity, _stats.Split('|'));
 
                     shop.AddItem(GetItem(args[0]), Int32.Parse(args[4]));
 
-                    string location = repo + @"\Item_" + args[0] + @".txt";
+                    string location = repo + @"\items\Item_" + args[0] + @".txt";
                     string[] lines = new string[6]
                     {
-                        $"Name:{args[0]}",
-                        $"Description:{args[1]}", 
-                        $"Cost:{cost.ToString()}", 
-                        $"Category:{args[3]}", 
-                        $"Rarity:{rarity.ToString()}", 
-                        $"Stats:"
+                        $"Name/{args[0]}",
+                        $"Description/{args[1]}", 
+                        $"Cost/{cost.ToString()}", 
+                        $"Category/{args[3]}", 
+                        $"Rarity/{rarity.ToString()}", 
+                        $"Stats/{_stats}"
                     };
 
                     File.WriteAllLines(location, lines);
@@ -51,7 +57,7 @@ namespace RPGStoreSimulator
                     if (!canRarity) Print($"Error > Failed to create item. The rarity is not a number.", ConsoleColor.Red);
                 }
             }
-            else Print("You cant create nothing, use '/admin_create {item name},{description},{cost},{type sword, spear, etc},{rarity 1-5}'.", ConsoleColor.Red);
+            else Print("You cant create nothing, use '/admin_create {item name},{description},{cost},{type Sword, Spear, etc},{rarity 1-5},{stats example: - Inflicts Poison|- Damage: 50}'.", ConsoleColor.Red);
         }
     }
 }

@@ -27,6 +27,8 @@ namespace RPGStoreSimulator
             this.usedBy = "0";
         }
 
+        public virtual void Setup() { } // For later use.
+
         public void SetName(string value) /* Setting item name. */
         {
             this.Name = value;
