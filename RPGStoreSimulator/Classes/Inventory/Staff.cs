@@ -8,8 +8,9 @@
         public Staff() { }
         public override void Setup() // Just adding stats cuz why not.
         {
-            Table.Add<string>(this.Stats, $"- Magic Type: {magicType}", out this.Stats);
-            Table.Add<string>(this.Stats, $"- Crit: {crit * 100}%", out this.Stats);
+            string[] stats = { };
+            Table.Add(GetStats(), $"- Magic Type: {magicType}", out stats); SetStats(stats);
+            Table.Add(GetStats(), $"- Crit: {crit * 100}%", out stats); SetStats(stats);
         }
     }
 }

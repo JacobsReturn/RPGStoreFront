@@ -7,16 +7,20 @@ namespace RPGStoreSimulator
     /// </summary>
     internal class BaseItem : Program /* Item Base. */
     {
-        public string Name;
-        public string Description;
-        public int Cost;
-        public string Category;
-        public int Rarity;
-        public string[] Stats = new string[] { };
-        public string Icon;
+        private string Name;
+        private string Description;
+        private int Cost;
+        private string Category;
+        private int Rarity;
+        private string[] Stats = new string[] { };
+        private string Icon;
+
         public string usedBy;
 
-        public BaseItem() /* Constructor. */
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public BaseItem()
         {
             this.Name = "Unknown";
             this.Description = "Unknown";
@@ -27,104 +31,98 @@ namespace RPGStoreSimulator
             this.usedBy = "0";
         }
 
-        public virtual void Setup() { } // For later use.
+        /// <summary>
+        /// Virtual Setup for later use.
+        /// </summary>
+        public virtual void Setup() { }
 
-        public void SetName(string value) /* Setting item name. */
-        {
-            this.Name = value;
-        }
+        /// <summary>
+        /// Setting the name of an item.
+        /// </summary>
+        /// <param name="value">The string name to set.</param>
+        public void SetName(string value) { this.Name = value; }
 
-        public void SetDescription(string value) /* Setting item description. */
-        {
-            this.Description = value;
-        }
+        /// <summary>
+        /// Setting item description.
+        /// </summary>
+        /// <param name="value">The string description to set.</param>
+        public void SetDescription(string value) { this.Description = value; }
 
-        public void SetCost(int value) /* Setting item cost. */
-        {
-            this.Cost = value;
-        }
+        /// <summary>
+        /// Setting the cost of the item.
+        /// </summary>
+        /// <param name="value">The int amount to be set as a buying price.</param>
+        public void SetCost(int value) { this.Cost = value; }
 
-        public void SetRarity(int value) /* Setting item rarity. */
-        {
-            this.Rarity = value;
-        }
+        /// <summary>
+        /// Setting item rarity.
+        /// </summary>
+        /// <param name="value">Rarity number (1-5</param>
+        public void SetRarity(int value) { this.Rarity = value; }
 
-        public void SetCategory(string value) /* Setting item category. */
+        /// <summary>
+        /// Setting the items category.
+        /// </summary>
+        /// <param name="value">String category for the item (Sword, Staff, etc)</param>
+        public void SetCategory(string value)
         {
             this.Category = value;
 
-            if (value == "Sword")
+            switch (value)
             {
-                this.Icon = "\x2666";
-            }
-            else if (value == "Spear")
-            {
-                this.Icon = "\x2660";
-            }
-            else if (value == "Daggers")
-            {
-                this.Icon = "\x2663";
-            }
-            else if (value == "Magic Staff")
-            {
-                this.Icon = "\x2736";
-            }
-            else if (value == "Helmet")
-            {
-                this.Icon = "\x263C";
-            }
-            else if (value == "Chestplate")
-            {
-                this.Icon = "\x263C";
-            }
-            else if (value == "Leggings")
-            {
-                this.Icon = "\x263C";
-            }
-            else if (value == "Boots")
-            {
-                this.Icon = "\x263C";
-            }
-            else if (value == "Item")
-            {
-                this.Icon = "\x25CA";
+                case "Sword": Icon = "\x2666"; break;
+                case "Spear": Icon = "\x2660"; break;
+                case "Daggers": Icon = "\x2663"; break;
+                case "Magic Staff": Icon = "\x2663"; break;
+                case "Helmet": Icon = "\x263C"; break;
+                case "Chestplate": Icon = "\x263C"; break;
+                case "Leggings": Icon = "\x263C"; break;
+                case "Boots": Icon = "\x263C"; break;
+                case "Item": Icon = "\x25CA"; break;
             }
         }
 
-        public void SetStats(string[] values) /* Setting item rarity. */
-        {
-            this.Stats = values;
-        }
+        /// <summary>
+        /// Setting an items stats.
+        /// </summary>
+        /// <param name="values">String array setting the stats, unlimited amount.</param>
+        public void SetStats(string[] values) { this.Stats = values; }
 
-        public string GetName() /* Grabbing items name. */
-        {
-            return this.Name;
-        }
+        /// <summary>
+        /// Grabbing the name of the item.
+        /// </summary>
+        /// <returns>Returns the items name.</returns>
+        public string GetName() { return this.Name; }
 
-        public string GetDescription() /* Grabbing items description. */
-        {
-            return this.Description;
-        }
+        /// <summary>
+        /// Grabbing the description of the item.
+        /// </summary>
+        /// <returns>Returns the items description.</returns>
+        public string GetDescription() { return this.Description; }
 
-        public int GetCost() /* Grabbing items cost. */
-        {
-            return this.Cost;
-        }
+        /// <summary>
+        /// Grabbing the cost of the item.
+        /// </summary>
+        /// <returns>Returns the items cost.</returns>
+        public int GetCost() { return this.Cost; }
 
-        public string GetCategory() /* Get the type aka Staff, Sword etc. */
-        {
-            return this.Category;
-        }
+        /// <summary>
+        /// Grabbing the category of the item.
+        /// </summary>
+        /// <returns>The category/type like staff, sword, etc.</returns>
+        public string GetCategory() { return this.Category; }
 
-        public int GetRarity() /* Get the rarity of the item. */
-        {
-            return this.Rarity;
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public int GetRarity() { return this.Rarity; }
 
-        public string[] GetStats() /* Get the stats of the item. */
-        {
-            return this.Stats;
-        }
+        /// <summary>
+        /// Grabbing the stats of the item.
+        /// </summary>
+        /// <returns>Returns the stats of the item.</returns>
+        public string[] GetStats() { return this.Stats; }
 
         /// <summary>
         /// Used to print the full info, category, stats, etc.
@@ -150,6 +148,11 @@ namespace RPGStoreSimulator
             }
         }
 
+        /// <summary>
+        /// Nicely prints the item.
+        /// </summary>
+        /// <param name="spacing">Add spacing like " ".</param>
+        /// <param name="cost">A boolean if you want to use the cost or not.</param>
         public void NicePrint(string spacing, bool cost)
         {
             string display = this.GetName();
@@ -161,6 +164,10 @@ namespace RPGStoreSimulator
             Print($"{spacing}[{this.Icon}] {display}", RarityColours[this.GetRarity() - 1, 1]);
         }
 
+        /// <summary>
+        /// Nicely prints the item.
+        /// </summary>
+        /// <param name="spacing">Add spacing like " ".</param>
         public void NicePrint(string spacing)
         {
             NicePrint(spacing, false);

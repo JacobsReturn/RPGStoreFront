@@ -35,10 +35,11 @@ namespace RPGStoreSimulator
         {
             if (ItemExists(item) & shop.HasItem(item))
             {
-                if (balance >= item.Cost)
+                int cost = item.GetCost();
+                if (balance >= cost)
                 {
-                    balance -= item.Cost;
-                    Print("You purchased: " + item.GetName() + " for $" + item.Cost + ". Your balance is now: $" + balance, ConsoleColor.Green);
+                    balance -= cost;
+                    Print("You purchased: " + item.GetName() + " for $" + cost + ". Your balance is now: $" + balance, ConsoleColor.Green);
 
                     AddItem(item, 1);
 
@@ -58,9 +59,10 @@ namespace RPGStoreSimulator
         {
             if (ItemExists(item) & user.HasItem(item))
             {
-                balance += item.Cost;
+                int cost = item.GetCost();
+                balance += cost;
 
-                Print("You sold: " + item.GetName() + " for $" + item.Cost + ". Your balance is now: $" + balance, ConsoleColor.Green);
+                Print("You sold: " + item.GetName() + " for $" + cost + ". Your balance is now: $" + balance, ConsoleColor.Green);
 
                 shop.AddItem(item, 1);
 
