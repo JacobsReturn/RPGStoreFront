@@ -1,0 +1,6 @@
+Name/Dragon Scale Boots
+Description/Scale Armour.
+Cost/800
+Category/Boots
+Rarity/1
+Stats/- Armour: 50|- Fire Resistance: 15%|- Speed Bonus: 215%|- Gains buff <[Ͼ] Lava Walk> for 10s.|               ▲ Allows you to walk on lava.

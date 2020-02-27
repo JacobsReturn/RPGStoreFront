@@ -1,0 +1,6 @@
+Name/Golden Feather
+Description/The feather of a golden duck.
+Cost/630
+Category/Item
+Rarity/2
+Stats/- Pure gold, good for crafting/trade.

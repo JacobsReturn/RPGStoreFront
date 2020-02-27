@@ -1,0 +1,6 @@
+Name/Dragon Scale Helmet
+Description/Scale Armour.
+Cost/1800
+Category/Helmet
+Rarity/1
+Stats/- Armour: 150|- Fire Resistance: 15%

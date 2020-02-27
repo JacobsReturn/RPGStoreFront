@@ -1,0 +1,6 @@
+Name/Poison Staff
+Description/A staff that can poison the target.
+Cost/800
+Category/Magic Staff
+Rarity/2
+Stats/- Direct Damage: 170|- Splash Damage: 30|- Projectile Speed: 25u/s.|- Applies <[Ͼ] Poison> for 160s.|            ▲ Deals 6 pure damage/s.

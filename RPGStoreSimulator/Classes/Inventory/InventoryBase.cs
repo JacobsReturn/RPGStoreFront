@@ -129,8 +129,11 @@ namespace RPGStoreSimulator
             int i = 1;
             foreach (BaseItem item in inventoryList)
             {
-                lines[i] = item.GetName();
-                ++i;
+                if (item != null)
+                {
+                    lines[i] = item.GetName();
+                    ++i;
+                }
             }
 
             File.WriteAllLines(location, lines);

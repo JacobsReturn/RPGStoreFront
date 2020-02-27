@@ -1,0 +1,6 @@
+Name/Heavens Penetration
+Description/A spear so powerful and light, it can kill any opponent swiftly.
+Cost/1800
+Category/Spear
+Rarity/1
+Stats/- Direct Damage: 10000|- Swing Speed: 0.2s

@@ -1,0 +1,6 @@
+Name/Dragon Scale Chestplate
+Description/Scale Armour.
+Cost/2500
+Category/Chestplate
+Rarity/1
+Stats/- Armour: 500|- Fire Resistance: 35%|- Damage Reduction: 15%

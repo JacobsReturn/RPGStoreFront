@@ -1,0 +1,6 @@
+Name/Dragon Scale Leggings
+Description/Scale Armour.
+Cost/2300
+Category/Leggings
+Rarity/1
+Stats/- Armour: 400|- Fire Resistance: 35%

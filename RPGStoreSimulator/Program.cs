@@ -227,32 +227,33 @@ namespace RPGStoreSimulator
 
             Print("Type /help for more information on the commands.", ConsoleColor.White);
 
-            /* Checking if files exist */
-            if (!File.Exists(repo + @"\" + user.name + @".txt") & !File.Exists(repo + @"\" + shop.name + @".txt"))
-            {
-                /* Giving the user and the shop class an item to have in their inventory */
-                user.AddItem(GetItem("Wooden Sword"), 3);
-                user.AddItem(GetItem("Dragon Scale"), 1);
-                user.AddItem(GetItem("Slime Skin"), 4);
-
-                foreach (BaseItem item in itemList)
-                {
-                    shop.AddItem(GetItem(item.GetName()), item.GetRarity());
-                }
-            }
-            else
-            {
-                /* Loading all items from files */
-                user.Load();
-                shop.Load();
-            }
-
             string[] files = Directory.GetFiles(repo + @"\items\", "*.txt");
+
+            bool storeLoaded = true;
             foreach (string file in files)
             {
                 if (file.Contains("Item_"))
                 {
                     string[] text = File.ReadAllLines(file);
+
+                    //using(StreamReader read = new StreamReader(file))
+                    //{
+                    //    for (bool finished = false; finished != true;)
+                    //    {
+                    //        if (read.ReadLine() == null)
+                    //        {
+                    //            read.Close();
+                    //            read.Dispose();
+                    //            read.DiscardBufferedData();
+
+                    //            finished = true;
+                    //        }
+                    //        else
+                    //        {
+                    //            Table.Add(text, read.ReadLine(), out text);
+                    //        }
+                    //    }
+                    //}
 
                     if (text.Length > 0)
                     {
@@ -302,10 +303,28 @@ namespace RPGStoreSimulator
                         }
                         
                         CreateItem(_name, _description, _cost, _category, _rarity, _stats);
-                        shop.AddItem(GetItem(_name), _rarity);
+
+                        if (!File.Exists(repo + @"\" + shop.name + @".txt")) storeLoaded = false;
+
+                        if (!storeLoaded)
+                        {
+                            shop.AddItem(GetItem(_name), _rarity);
+                        }
                     }
                 }
             }
+
+            /* Checking if files exist */
+            if (!File.Exists(repo + @"\" + user.name + @".txt"))
+            {
+                /* Giving the user and the shop class an item to have in their inventory */
+                user.AddItem(GetItem("Wooden Sword"), 3);
+                user.AddItem(GetItem("Dragon Scale"), 1);
+                user.AddItem(GetItem("Slime Skin"), 4);
+            }
+            else user.Load();
+
+            if (storeLoaded) shop.Load();
 
             /* Creating a list for all of our commands (ease of access). */
             commandList = new Commands[]

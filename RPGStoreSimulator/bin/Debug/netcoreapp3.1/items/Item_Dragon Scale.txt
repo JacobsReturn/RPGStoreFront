@@ -1,0 +1,6 @@
+Name/Dragon Scale
+Description/A scale of a dragon.
+Cost/1000
+Category/Item
+Rarity/1
+Stats/- Can be used for crafting, fire resistant, stronger then most metals, water resistance, highly durable.

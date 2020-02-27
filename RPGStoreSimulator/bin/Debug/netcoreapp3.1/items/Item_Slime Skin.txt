@@ -1,0 +1,6 @@
+Name/Slime Skin
+Description/Skin of a slime.
+Cost/18
+Category/Item
+Rarity/5
+Stats/- Can be used for crafting, very sticky.

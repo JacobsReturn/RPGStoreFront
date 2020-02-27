@@ -1,0 +1,6 @@
+Name/Frost Staff
+Description/Allows the wielder to shoot powerful ice bolts. The bolts apply frostbite.
+Cost/1300
+Category/Magic Staff
+Rarity/1
+Stats/- Direct Damage: 500|- Splash Damage: 100|- Projectile Speed: 63u/s.|- Applies <[Ͼ] Frostbite> for 10s.|            ▲ Deals 35 magic damage/s.

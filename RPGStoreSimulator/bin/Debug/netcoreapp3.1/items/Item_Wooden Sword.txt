@@ -1,0 +1,6 @@
+Name/Wooden Sword
+Description/A sturdy piece of wood capable of barely damaging your enemies
+Cost/8
+Category/Sword
+Rarity/5
+Stats/- Direct Damage: 3|- Swing Speed: 1.3s

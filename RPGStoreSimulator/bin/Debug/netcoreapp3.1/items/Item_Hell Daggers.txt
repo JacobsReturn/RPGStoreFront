@@ -1,0 +1,6 @@
+Name/Hell Daggers
+Description/The dual daggers born from the hell scape itself. Ignites targets on hit.
+Cost/1600
+Category/Daggers
+Rarity/1
+Stats/- Direct Damage: 600/per dagger|- Swing Speed: 0.2s/per dagger|- Applies <[Ͼ] Ignite> for 13s.|            ▲ Deals 18 magic damage/s.

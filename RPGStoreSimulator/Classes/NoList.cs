@@ -50,15 +50,13 @@ namespace RPGStoreSimulator
         /// <param name="outArray">Output array location</param>
         public static void Remove<T>(T[] array, T input, out T[] outArray)
         {
-            int newLength = array.Length - 1;
+            T[] newArray = new T[] { };
 
-            T[] newArray = new T[newLength];
-
-            for (int i = 0; i <= newLength; i++)
+            foreach (T value in array)
             {
-                if (!array[i].Equals(input))
+                if (!value.Equals(input))
                 {
-                    newArray[newArray.GetUpperBound(0)] = array[i];
+                    Table.Add(newArray, value, out newArray);
                 }
             }
 
