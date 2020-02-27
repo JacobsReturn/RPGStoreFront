@@ -52,11 +52,13 @@ namespace RPGStoreSimulator
         {
             T[] newArray = new T[] { };
 
+            bool found = false;
             foreach (T value in array)
             {
-                if (!value.Equals(input))
+                if (!value.Equals(input) & !found)
                 {
                     Table.Add(newArray, value, out newArray);
+                    found = true;
                 }
             }
 
