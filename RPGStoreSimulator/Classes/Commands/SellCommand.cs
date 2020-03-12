@@ -24,7 +24,7 @@ namespace RPGStoreSimulator
                 foreach (BaseItem item in user.inventoryList)
                 {
                     string itemName = item.GetName();
-                    if (arg == itemName)
+                    if (arg == itemName & !found)
                     {
                         user.SellItem(item);
                         found = true;
@@ -33,7 +33,7 @@ namespace RPGStoreSimulator
                     }
                 }
 
-                if (!found) Print("Galvash does not own the item " + arg + ".", ConsoleColor.Red);
+                if (!found) Print("You do not own the item " + arg + ".", ConsoleColor.Red);
             }
             else if (user.atStore) Print("You cannot sell 'nothing', use '/sell {item name}', and use /inventory to find a list of items to sell.", ConsoleColor.Red);
         }

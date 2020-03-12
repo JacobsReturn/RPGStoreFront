@@ -9,17 +9,18 @@ namespace RPGStoreSimulator
     /// </summary>
     class Program : Library
     {
-        public static Commands[] commandList; /* Creating a command list for all commands (ease of access). */
-        public static BaseItem[] itemList = new BaseItem[] { }; /* Creating a list for all created items (ease of access). */
+        public static Commands[] commandList; // Creating a command list for all commands (ease of access).
+        public static BaseItem[] itemList = new BaseItem[] { }; // Creating a list for all created items (ease of access).
 
         /* Creating entities */
-        public static Player user = new Player();
-        public static Store shop = new Store();
+        public static Player user = new Player(); // Creating a player.
+        public static Store shop = new Store(); // Creating the store.
 
-        public static BaseItem itemReference = new BaseItem();
+        public static BaseItem itemReference = new BaseItem(); // A simple reference incase issues occur.
 
-        public static string repo = Environment.CurrentDirectory;
+        public static string repo = Environment.CurrentDirectory; // The repository to save the file.
 
+        // Rarity Colours
         public static string[,] RarityColours = new string[5,2]{
             { "Legendary", "Yellow" }, 
             { "Epic", "Magenta" }, 

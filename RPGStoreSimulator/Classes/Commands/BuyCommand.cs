@@ -24,7 +24,7 @@ namespace RPGStoreSimulator
                 foreach (BaseItem item in shop.inventoryList)
                 {
                     string itemName = item.GetName();
-                    if (arg == itemName)
+                    if (arg == itemName & !found)
                     {
                         user.BuyItem(item);
                         found = true;
